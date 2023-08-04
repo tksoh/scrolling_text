@@ -17,14 +17,15 @@ class ScrollingText extends StatefulWidget {
   });
 
   @override
-  State<ScrollingText> createState() => _ScrollingTextState();
+  State<ScrollingText> createState() => ScrollingTextState();
 }
 
-class _ScrollingTextState extends State<ScrollingText> {
+class ScrollingTextState extends State<ScrollingText> {
   double scrollOffset = 0;
   ScrollController controller = ScrollController();
   late Duration scrollDuration;
   late int repeatCounter;
+  bool scrolling = true;
 
   @override
   void initState() {
@@ -47,9 +48,37 @@ class _ScrollingTextState extends State<ScrollingText> {
     return scroller;
   }
 
+  void start() {
+    resume();
+  }
+
+  void pause() {
+    scrolling = false;
+  }
+
+  void resume() {
+    scrolling = true;
+    setupNextScroll();
+  }
+
+  void stop() {
+    pause();
+  }
+
+  void restart() {
+    if (scrolling) {
+      stop();
+    }
+
+    repeatCounter = widget.repeatCount;
+    start();
+  }
+
   void setupNextScroll() {
     Future.delayed(scrollDuration, () {
-      scrollText();
+      if (scrolling) {
+        scrollText();
+      }
     });
   }
 

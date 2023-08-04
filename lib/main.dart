@@ -14,6 +14,8 @@ const longText = '''
 /// {@youtube 560 315 https://www.youtube.com/watch?v=wE7khGHVkYY}
 ''';
 
+final scrollTextKey = GlobalKey<ScrollingTextState>();
+
 void main() {
   runApp(const MyApp());
 }
@@ -46,6 +48,7 @@ class _MyHomePageState extends State<MyHomePage> {
   int _counter = 0;
 
   void _incrementCounter() {
+    scrollTextKey.currentState?.restart();
     setState(() {
       _counter++;
     });
@@ -61,10 +64,11 @@ class _MyHomePageState extends State<MyHomePage> {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: <Widget>[
-            const ScrollingText(
+            ScrollingText(
+              key: scrollTextKey,
               text: longText,
               height: 20,
-              reboundDelay: Duration(seconds: 2),
+              reboundDelay: const Duration(seconds: 2),
               repeatCount: 1,
             ),
             Text(
