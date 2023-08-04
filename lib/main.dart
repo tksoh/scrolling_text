@@ -1,5 +1,19 @@
 import 'package:flutter/material.dart';
 
+import 'scrolling_text.dart';
+
+const longText = '''
+/// A widget that does not require mutable state.
+///
+/// A stateless widget is a widget that describes part of the user interface by
+/// building a constellation of other widgets that describe the user interface
+/// more concretely. The building process continues recursively until the
+/// description of the user interface is fully concrete (e.g., consists
+/// entirely of [RenderObjectWidget]s, which describe concrete [RenderObject]s).
+///
+/// {@youtube 560 315 https://www.youtube.com/watch?v=wE7khGHVkYY}
+''';
+
 void main() {
   runApp(const MyApp());
 }
@@ -21,8 +35,6 @@ class MyApp extends StatelessWidget {
 
 class MyHomePage extends StatefulWidget {
   const MyHomePage({super.key, required this.title});
-
-
 
   final String title;
 
@@ -49,8 +61,10 @@ class _MyHomePageState extends State<MyHomePage> {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: <Widget>[
-            const Text(
-              'You have pushed the button this many times:',
+            const ScrollingText(
+              text: longText,
+              height: 20,
+              reboundDelay: Duration(seconds: 2),
             ),
             Text(
               '$_counter',
