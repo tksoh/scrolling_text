@@ -65,6 +65,7 @@ class _MyHomePageState extends State<MyHomePage> {
               text: longText,
               height: 20,
               reboundDelay: Duration(seconds: 2),
+              repeatCount: 1,
             ),
             Text(
               '$_counter',

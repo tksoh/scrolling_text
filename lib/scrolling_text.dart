@@ -67,7 +67,9 @@ class _ScrollingTextState extends State<ScrollingText> {
             curve: Curves.linear,
           );
         });
-        setupNextScroll();
+        if (shouldRepeatScroll()) {
+          setupNextScroll();
+        }
       });
     } else {
       scrollOffset += 10;
@@ -79,6 +81,20 @@ class _ScrollingTextState extends State<ScrollingText> {
         );
       });
       setupNextScroll();
+    }
+  }
+
+  bool shouldRepeatScroll() {
+    if (repeatCounter < 0) {
+      // continuous scroll
+      return true;
+    } else if (repeatCounter <= 1) {
+      // countdown complete
+      return false;
+    } else {
+      // counting down
+      repeatCounter--;
+      return true;
     }
   }
 }
