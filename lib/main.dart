@@ -78,6 +78,18 @@ class _MyHomePageState extends State<MyHomePage> {
                 style: const TextStyle(fontSize: 25),
               ),
             ),
+            ValueListenableBuilder(
+              valueListenable: rollController.status,
+              builder: (context, value, child) {
+                return Text(
+                  'Rolling: $value',
+                  style: TextStyle(
+                    fontSize: 25,
+                    color: value ? Colors.green : Colors.red,
+                  ),
+                );
+              },
+            ),
             Text(
               '$_counter',
               style: Theme.of(context).textTheme.headlineMedium,

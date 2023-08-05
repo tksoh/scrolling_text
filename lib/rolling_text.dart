@@ -33,7 +33,7 @@ class RollingTextState extends State<RollingText> {
   ScrollController controller = ScrollController();
   late Duration scrollDuration;
   int? repeatCounter;
-  bool scrolling = true;
+  final rolling = ValueNotifier(true);
   Size? textSize;
   late RollingTextController textController;
 
@@ -51,6 +51,7 @@ class RollingTextState extends State<RollingText> {
       return;
     }
 
+    // connect controller to state methods
     textController = widget.controller!;
     textController.start = start;
     textController.stop = stop;
@@ -58,6 +59,14 @@ class RollingTextState extends State<RollingText> {
     textController.restart = restart;
     textController.rewind = rewind;
     textController.resume = resume;
+    textController.isRolling = isRolling;
+
+    // setup status monitor
+    textController.status.value = rolling.value;
+    rolling.addListener(() {
+      debugPrint('status = ${rolling.value}');
+      textController.status.value = rolling.value;
+    });
   }
 
   @override
@@ -86,11 +95,11 @@ class RollingTextState extends State<RollingText> {
   }
 
   void pause() {
-    scrolling = false;
+    rolling.value = false;
   }
 
   void resume() {
-    scrolling = true;
+    rolling.value = true;
     setupNextScroll();
   }
 
@@ -99,7 +108,7 @@ class RollingTextState extends State<RollingText> {
   }
 
   void restart() {
-    if (scrolling) {
+    if (rolling.value) {
       stop();
     }
 
@@ -118,9 +127,13 @@ class RollingTextState extends State<RollingText> {
     });
   }
 
+  bool isRolling() {
+    return rolling.value;
+  }
+
   void setupNextScroll() {
     Future.delayed(scrollDuration, () {
-      if (scrolling) {
+      if (rolling.value) {
         scrollText();
       }
     });
@@ -140,6 +153,8 @@ class RollingTextState extends State<RollingText> {
 
         if (keepScroll) {
           setupNextScroll();
+        } else {
+          rolling.value = false;
         }
       });
     } else {
@@ -183,13 +198,25 @@ class RollingTextState extends State<RollingText> {
   }
 }
 
+typedef BoolCallBack = bool Function();
+
+enum RollingStatus {
+  rolling,
+  stopped,
+}
+
 class RollingTextController {
+  final ValueNotifier status = ValueNotifier(false);
   VoidCallback start = _notImplemented;
   VoidCallback stop = _notImplemented;
   VoidCallback restart = _notImplemented;
   VoidCallback pause = _notImplemented;
   VoidCallback resume = _notImplemented;
   VoidCallback rewind = _notImplemented;
+  BoolCallBack isRolling = () {
+    _notImplemented();
+    return false;
+  };
 
   static void _notImplemented() {
     throw "this function is not implemented";
