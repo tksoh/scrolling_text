@@ -8,6 +8,7 @@ class ScrollingText extends StatefulWidget {
   final int? repeatCount;
   final int lines;
   final TextStyle? style;
+  final bool returnToTop;
 
   const ScrollingText({
     required this.text,
@@ -15,6 +16,7 @@ class ScrollingText extends StatefulWidget {
     this.reboundDelay,
     this.repeatCount,
     this.lines = 1,
+    this.returnToTop = true,
     this.style,
     super.key,
   });
@@ -96,14 +98,18 @@ class ScrollingTextState extends State<ScrollingText> {
       debugPrint('bottom reached');
       scrollOffset = 0;
       Future.delayed(widget.reboundDelay ?? Duration.zero, () {
-        setState(() {
-          controller.animateTo(
-            scrollOffset,
-            duration: const Duration(milliseconds: 1),
-            curve: Curves.linear,
-          );
-        });
-        if (shouldRepeatScroll()) {
+        final keepScroll = shouldRepeatScroll();
+        if (!keepScroll && widget.returnToTop) {
+          setState(() {
+            controller.animateTo(
+              scrollOffset,
+              duration: const Duration(milliseconds: 1),
+              curve: Curves.linear,
+            );
+          });
+        }
+
+        if (keepScroll) {
           setupNextScroll();
         }
       });
