@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 
 class RollingText extends StatefulWidget {
@@ -36,6 +38,7 @@ class RollingTextState extends State<RollingText> {
   final rolling = ValueNotifier(true);
   Size? textSize;
   late RollingTextController textController;
+  Timer? rollTimer;
 
   @override
   void initState() {
@@ -96,9 +99,13 @@ class RollingTextState extends State<RollingText> {
 
   void pause() {
     rolling.value = false;
+    rollTimer?.cancel();
+    rollTimer = null;
   }
 
   void resume() {
+    if (rolling.value) return;
+
     rolling.value = true;
     setupNextScroll();
   }
@@ -119,6 +126,7 @@ class RollingTextState extends State<RollingText> {
 
   void rewind() {
     setState(() {
+      scrollOffset = 0;
       controller.animateTo(
         scrollOffset,
         duration: const Duration(milliseconds: 1),
@@ -132,7 +140,10 @@ class RollingTextState extends State<RollingText> {
   }
 
   void setupNextScroll() {
-    Future.delayed(scrollDuration, () {
+    assert(rollTimer == null);
+
+    rollTimer = Timer(scrollDuration, () {
+      rollTimer = null;
       if (rolling.value) {
         scrollText();
       }
@@ -145,7 +156,8 @@ class RollingTextState extends State<RollingText> {
     if (scrollOffset >= bottom) {
       debugPrint('bottom reached');
       scrollOffset = 0;
-      Future.delayed(widget.repeatPause ?? Duration.zero, () {
+      rollTimer = Timer(widget.repeatPause ?? Duration.zero, () {
+        rollTimer = null;
         final keepScroll = shouldRepeatScroll();
         if (!keepScroll && widget.rewindWhenDone) {
           rewind();
