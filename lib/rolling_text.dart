@@ -47,11 +47,14 @@ class RollingTextState extends State<RollingText> {
 
     return SizedBox(
       height: textSize!.height * widget.lines,
-      child: SingleChildScrollView(
-        controller: controller,
-        child: Text(
-          widget.text,
-          style: widget.style,
+      child: ScrollConfiguration(
+        behavior: ScrollConfiguration.of(context).copyWith(scrollbars: false),
+        child: SingleChildScrollView(
+          controller: controller,
+          child: Text(
+            widget.text,
+            style: widget.style,
+          ),
         ),
       ),
     );
