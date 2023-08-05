@@ -14,6 +14,21 @@ const longText = '''
 /// {@youtube 560 315 https://www.youtube.com/watch?v=wE7khGHVkYY}
 ''';
 
+const arabicText = '''
+دی ناگه از نگارم اندر رسید نامه
+قالت: رای فوادی من هجرک القیامه
+گفتم که: عشق و دل را باشد علامتی هم
+قالت: دموع عینی لم تکف بالعلامه
+گفتا که: می چه سازی گفتم که مر سفر را
+قالت: فمر صحیحا بالخیر و السلامه
+گفتم: وفا نداری گفتا که: آزمودی
+من جرب المجرب حلت به الندامه
+گفتم: وداع نایی واندر برم نگیری
+قالت: ترید وصلی سرا و لا کرامه
+گفتا: بگیر زلفم گفتم: ملامت آید
+قالت: الست تدری العشق و الملامه
+''';
+
 final scrollTextKey = GlobalKey<RollingTextState>();
 
 void main() {
@@ -74,6 +89,11 @@ class _MyHomePageState extends State<MyHomePage> {
                 rewindOnComplete: false,
                 lines: 2,
                 style: const TextStyle(fontSize: 25),
+                child: const SelectableText(
+                  arabicText,
+                  style: TextStyle(fontSize: 14),
+                  textDirection: TextDirection.rtl,
+                ),
               ),
             ),
             Text(
