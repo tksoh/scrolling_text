@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-import 'scrolling_text.dart';
+import 'rolling_text.dart';
 
 const longText = '''
 /// A widget that does not require mutable state.
