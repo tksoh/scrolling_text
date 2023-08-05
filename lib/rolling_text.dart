@@ -1,4 +1,3 @@
-import 'dart:ui' as ui;
 import 'package:flutter/material.dart';
 
 class RollingText extends StatefulWidget {
@@ -9,6 +8,7 @@ class RollingText extends StatefulWidget {
   final int lines;
   final TextStyle? style;
   final bool rewindOnComplete;
+  final TextDirection? textDirection;
 
   const RollingText({
     required this.text,
@@ -18,6 +18,7 @@ class RollingText extends StatefulWidget {
     this.lines = 1,
     this.rewindOnComplete = true,
     this.style,
+    this.textDirection,
     super.key,
   });
 
@@ -54,6 +55,7 @@ class RollingTextState extends State<RollingText> {
           child: Text(
             widget.text,
             style: widget.style,
+            textDirection: widget.textDirection,
           ),
         ),
       ),
@@ -156,7 +158,7 @@ class RollingTextState extends State<RollingText> {
       text: TextSpan(text: 'A', style: style),
       maxLines: 1,
       textScaleFactor: MediaQuery.of(context).textScaleFactor,
-      textDirection: ui.TextDirection.rtl,
+      textDirection: TextDirection.ltr,
     )..layout(minWidth: 0, maxWidth: double.infinity);
     return textPainter.size;
   }
