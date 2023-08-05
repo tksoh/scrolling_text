@@ -43,7 +43,7 @@ class RollingTextState extends State<RollingText> {
 
   @override
   Widget build(BuildContext context) {
-    textSize ??= getTextSize(widget.text, style: widget.style);
+    textSize ??= getTextSize(style: widget.style);
 
     return SizedBox(
       height: textSize!.height * widget.lines,
@@ -143,9 +143,9 @@ class RollingTextState extends State<RollingText> {
     return true;
   }
 
-  Size getTextSize(String text, {TextStyle? style}) {
+  Size getTextSize({TextStyle? style}) {
     final TextPainter textPainter = TextPainter(
-      text: TextSpan(text: text, style: style),
+      text: TextSpan(text: 'A', style: style),
       maxLines: 1,
       textScaleFactor: MediaQuery.of(context).textScaleFactor,
       textDirection: ui.TextDirection.rtl,
