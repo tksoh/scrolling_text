@@ -8,7 +8,7 @@ class RollingText extends StatefulWidget {
   final int? repeatCount;
   final int lines;
   final TextStyle? style;
-  final bool returnToTop;
+  final bool rewindOnComplete;
 
   const RollingText({
     required this.text,
@@ -16,7 +16,7 @@ class RollingText extends StatefulWidget {
     this.reboundDelay,
     this.repeatCount,
     this.lines = 1,
-    this.returnToTop = true,
+    this.rewindOnComplete = true,
     this.style,
     super.key,
   });
@@ -83,7 +83,18 @@ class RollingTextState extends State<RollingText> {
     }
 
     repeatCounter = widget.repeatCount;
+    rewind();
     start();
+  }
+
+  void rewind() {
+    setState(() {
+      controller.animateTo(
+        scrollOffset,
+        duration: const Duration(milliseconds: 1),
+        curve: Curves.linear,
+      );
+    });
   }
 
   void setupNextScroll() {
@@ -102,14 +113,8 @@ class RollingTextState extends State<RollingText> {
       scrollOffset = 0;
       Future.delayed(widget.reboundDelay ?? Duration.zero, () {
         final keepScroll = shouldRepeatScroll();
-        if (!keepScroll && widget.returnToTop) {
-          setState(() {
-            controller.animateTo(
-              scrollOffset,
-              duration: const Duration(milliseconds: 1),
-              curve: Curves.linear,
-            );
-          });
+        if (!keepScroll && widget.rewindOnComplete) {
+          rewind();
         }
 
         if (keepScroll) {

@@ -71,7 +71,7 @@ class _MyHomePageState extends State<MyHomePage> {
                 text: longText,
                 reboundDelay: const Duration(seconds: 2),
                 repeatCount: 1,
-                returnToTop: false,
+                rewindOnComplete: false,
                 lines: 2,
                 style: const TextStyle(fontSize: 25),
               ),
