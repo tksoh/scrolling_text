@@ -64,12 +64,16 @@ class _MyHomePageState extends State<MyHomePage> {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: <Widget>[
-            ScrollingText(
-              key: scrollTextKey,
-              text: longText,
-              height: 20,
-              reboundDelay: const Duration(seconds: 2),
-              repeatCount: 1,
+            showWidgetBorder(
+              color: Colors.blue,
+              child: ScrollingText(
+                key: scrollTextKey,
+                text: longText,
+                reboundDelay: const Duration(seconds: 2),
+                repeatCount: 1,
+                lines: 2,
+                style: const TextStyle(fontSize: 25),
+              ),
             ),
             Text(
               '$_counter',
@@ -85,4 +89,23 @@ class _MyHomePageState extends State<MyHomePage> {
       ), // This trailing comma makes auto-formatting nicer for build methods.
     );
   }
+}
+
+Widget showWidgetBorder({
+  required Widget child,
+  Color color = Colors.grey,
+  bool enabled = true,
+  double width = 1,
+}) {
+  return enabled
+      ? Container(
+          decoration: BoxDecoration(
+            border: Border.all(
+              color: color,
+              width: width,
+            ),
+          ),
+          child: child,
+        )
+      : child;
 }

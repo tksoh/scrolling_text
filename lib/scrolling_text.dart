@@ -1,18 +1,21 @@
+import 'dart:ui' as ui;
 import 'package:flutter/material.dart';
 
 class ScrollingText extends StatefulWidget {
   final String text;
-  final double height;
-  final Duration? duration;
+  final Duration? speed;
   final Duration? reboundDelay;
   final int repeatCount;
+  final int lines;
+  final TextStyle? style;
 
   const ScrollingText({
     required this.text,
-    required this.height,
-    this.duration,
+    this.speed,
     this.reboundDelay,
     this.repeatCount = -1,
+    this.lines = 1,
+    this.style,
     super.key,
   });
 
@@ -26,26 +29,30 @@ class ScrollingTextState extends State<ScrollingText> {
   late Duration scrollDuration;
   late int repeatCounter;
   bool scrolling = true;
+  Size? textSize;
 
   @override
   void initState() {
     repeatCounter = widget.repeatCount;
-    scrollDuration = widget.duration ?? const Duration(milliseconds: 500);
+    scrollDuration = widget.speed ?? const Duration(milliseconds: 500);
     setupNextScroll();
     super.initState();
   }
 
   @override
   Widget build(BuildContext context) {
-    final scroller = SizedBox(
-      height: widget.height,
+    textSize ??= getTextSize(widget.text, style: widget.style);
+
+    return SizedBox(
+      height: textSize!.height * widget.lines,
       child: SingleChildScrollView(
         controller: controller,
-        child: Text(widget.text),
+        child: Text(
+          widget.text,
+          style: widget.style,
+        ),
       ),
     );
-
-    return scroller;
   }
 
   void start() {
@@ -125,5 +132,15 @@ class ScrollingTextState extends State<ScrollingText> {
       repeatCounter--;
       return true;
     }
+  }
+
+  Size getTextSize(String text, {TextStyle? style}) {
+    final TextPainter textPainter = TextPainter(
+      text: TextSpan(text: text, style: style),
+      maxLines: 1,
+      textScaleFactor: MediaQuery.of(context).textScaleFactor,
+      textDirection: ui.TextDirection.rtl,
+    )..layout(minWidth: 0, maxWidth: double.infinity);
+    return textPainter.size;
   }
 }
