@@ -5,7 +5,7 @@ class ScrollingText extends StatefulWidget {
   final String text;
   final Duration? speed;
   final Duration? reboundDelay;
-  final int repeatCount;
+  final int? repeatCount;
   final int lines;
   final TextStyle? style;
 
@@ -13,7 +13,7 @@ class ScrollingText extends StatefulWidget {
     required this.text,
     this.speed,
     this.reboundDelay,
-    this.repeatCount = -1,
+    this.repeatCount,
     this.lines = 1,
     this.style,
     super.key,
@@ -27,7 +27,7 @@ class ScrollingTextState extends State<ScrollingText> {
   double scrollOffset = 0;
   ScrollController controller = ScrollController();
   late Duration scrollDuration;
-  late int repeatCounter;
+  int? repeatCounter;
   bool scrolling = true;
   Size? textSize;
 
@@ -121,17 +121,20 @@ class ScrollingTextState extends State<ScrollingText> {
   }
 
   bool shouldRepeatScroll() {
-    if (repeatCounter < 0) {
+    if (repeatCounter == null) {
       // continuous scroll
       return true;
-    } else if (repeatCounter <= 1) {
+    }
+
+    // counting down
+    repeatCounter = repeatCounter! - 1;
+
+    if (repeatCounter! <= 0) {
       // countdown complete
       return false;
-    } else {
-      // counting down
-      repeatCounter--;
-      return true;
     }
+
+    return true;
   }
 
   Size getTextSize(String text, {TextStyle? style}) {

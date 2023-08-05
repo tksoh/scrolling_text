@@ -70,7 +70,7 @@ class _MyHomePageState extends State<MyHomePage> {
                 key: scrollTextKey,
                 text: longText,
                 reboundDelay: const Duration(seconds: 2),
-                repeatCount: 1,
+                repeatCount: 2,
                 lines: 2,
                 style: const TextStyle(fontSize: 25),
               ),
