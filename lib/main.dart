@@ -14,7 +14,7 @@ const longText = '''
 /// {@youtube 560 315 https://www.youtube.com/watch?v=wE7khGHVkYY}
 ''';
 
-final scrollTextKey = GlobalKey<ScrollingTextState>();
+final scrollTextKey = GlobalKey<RollingTextState>();
 
 void main() {
   runApp(const MyApp());
@@ -66,7 +66,7 @@ class _MyHomePageState extends State<MyHomePage> {
           children: <Widget>[
             showWidgetBorder(
               color: Colors.blue,
-              child: ScrollingText(
+              child: RollingText(
                 key: scrollTextKey,
                 text: longText,
                 reboundDelay: const Duration(seconds: 2),

@@ -1,7 +1,7 @@
 import 'dart:ui' as ui;
 import 'package:flutter/material.dart';
 
-class ScrollingText extends StatefulWidget {
+class RollingText extends StatefulWidget {
   final String text;
   final Duration? speed;
   final Duration? reboundDelay;
@@ -10,7 +10,7 @@ class ScrollingText extends StatefulWidget {
   final TextStyle? style;
   final bool returnToTop;
 
-  const ScrollingText({
+  const RollingText({
     required this.text,
     this.speed,
     this.reboundDelay,
@@ -22,10 +22,10 @@ class ScrollingText extends StatefulWidget {
   });
 
   @override
-  State<ScrollingText> createState() => ScrollingTextState();
+  State<RollingText> createState() => RollingTextState();
 }
 
-class ScrollingTextState extends State<ScrollingText> {
+class RollingTextState extends State<RollingText> {
   double scrollOffset = 0;
   ScrollController controller = ScrollController();
   late Duration scrollDuration;
