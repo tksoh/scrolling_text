@@ -69,10 +69,10 @@ class _MyHomePageState extends State<MyHomePage> {
               child: RollingText(
                 key: scrollTextKey,
                 text: longText,
-                reboundDelay: const Duration(seconds: 2),
+                repeatPause: const Duration(seconds: 1),
                 repeatCount: 1,
-                rewindOnComplete: false,
-                lines: 2,
+                rewindWhenDone: false,
+                maxLines: 2,
                 style: const TextStyle(fontSize: 25),
               ),
             ),

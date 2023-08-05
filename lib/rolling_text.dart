@@ -3,20 +3,20 @@ import 'package:flutter/material.dart';
 class RollingText extends StatefulWidget {
   final String text;
   final Duration? speed;
-  final Duration? reboundDelay;
+  final Duration? repeatPause;
   final int? repeatCount;
-  final int lines;
+  final int maxLines;
   final TextStyle? style;
-  final bool rewindOnComplete;
+  final bool rewindWhenDone;
   final TextDirection? textDirection;
 
   const RollingText({
     required this.text,
     this.speed,
-    this.reboundDelay,
+    this.repeatPause,
     this.repeatCount,
-    this.lines = 1,
-    this.rewindOnComplete = true,
+    this.maxLines = 1,
+    this.rewindWhenDone = true,
     this.style,
     this.textDirection,
     super.key,
@@ -44,10 +44,11 @@ class RollingTextState extends State<RollingText> {
 
   @override
   Widget build(BuildContext context) {
+    assert(widget.maxLines > 0);
     textSize ??= getTextSize(style: widget.style);
 
     return SizedBox(
-      height: textSize!.height * widget.lines,
+      height: textSize!.height * widget.maxLines,
       child: ScrollConfiguration(
         behavior: ScrollConfiguration.of(context).copyWith(scrollbars: false),
         child: SingleChildScrollView(
@@ -113,9 +114,9 @@ class RollingTextState extends State<RollingText> {
     if (scrollOffset >= bottom) {
       debugPrint('bottom reached');
       scrollOffset = 0;
-      Future.delayed(widget.reboundDelay ?? Duration.zero, () {
+      Future.delayed(widget.repeatPause ?? Duration.zero, () {
         final keepScroll = shouldRepeatScroll();
-        if (!keepScroll && widget.rewindOnComplete) {
+        if (!keepScroll && widget.rewindWhenDone) {
           rewind();
         }
 
