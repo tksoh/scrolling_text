@@ -9,6 +9,7 @@ class RollingText extends StatefulWidget {
   final TextStyle? style;
   final bool rewindWhenDone;
   final TextDirection? textDirection;
+  final RollingTextController? controller;
 
   const RollingText({
     required this.text,
@@ -19,6 +20,7 @@ class RollingText extends StatefulWidget {
     this.rewindWhenDone = true,
     this.style,
     this.textDirection,
+    this.controller,
     super.key,
   });
 
@@ -33,13 +35,29 @@ class RollingTextState extends State<RollingText> {
   int? repeatCounter;
   bool scrolling = true;
   Size? textSize;
+  late RollingTextController textController;
 
   @override
   void initState() {
     repeatCounter = widget.repeatCount;
     scrollDuration = widget.speed ?? const Duration(milliseconds: 500);
     setupNextScroll();
+    initController();
     super.initState();
+  }
+
+  void initController() {
+    if (widget.controller == null) {
+      return;
+    }
+
+    textController = widget.controller!;
+    textController.start = start;
+    textController.stop = stop;
+    textController.pause = pause;
+    textController.restart = restart;
+    textController.rewind = rewind;
+    textController.resume = resume;
   }
 
   @override
@@ -162,5 +180,18 @@ class RollingTextState extends State<RollingText> {
       textDirection: TextDirection.ltr,
     )..layout(minWidth: 0, maxWidth: double.infinity);
     return textPainter.size;
+  }
+}
+
+class RollingTextController {
+  VoidCallback start = _notImplemented;
+  VoidCallback stop = _notImplemented;
+  VoidCallback restart = _notImplemented;
+  VoidCallback pause = _notImplemented;
+  VoidCallback resume = _notImplemented;
+  VoidCallback rewind = _notImplemented;
+
+  static void _notImplemented() {
+    throw "this function is not implemented";
   }
 }

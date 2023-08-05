@@ -46,9 +46,10 @@ class MyHomePage extends StatefulWidget {
 
 class _MyHomePageState extends State<MyHomePage> {
   int _counter = 0;
+  final rollController = RollingTextController();
 
   void _incrementCounter() {
-    scrollTextKey.currentState?.restart();
+    rollController.restart();
     setState(() {
       _counter++;
     });
@@ -68,6 +69,7 @@ class _MyHomePageState extends State<MyHomePage> {
               color: Colors.blue,
               child: RollingText(
                 key: scrollTextKey,
+                controller: rollController,
                 text: longText,
                 repeatPause: const Duration(seconds: 1),
                 repeatCount: 1,
