@@ -39,6 +39,9 @@ class RollingTextState extends State<RollingText> {
   Size? textSize;
   late RollingTextController textController;
   Timer? rollTimer;
+  final quickly = const Duration(milliseconds: 1);
+
+  double get scrollEndPos => controller.position.maxScrollExtent;
 
   @override
   void initState() {
@@ -62,6 +65,7 @@ class RollingTextState extends State<RollingText> {
     textController.restart = restart;
     textController.rewind = rewind;
     textController.resume = resume;
+    textController.goto = goto;
     textController.isRolling = isRolling;
 
     // setup status monitor
@@ -97,14 +101,18 @@ class RollingTextState extends State<RollingText> {
     );
   }
 
+  void stopTimer() {
+    rollTimer?.cancel();
+    rollTimer = null;
+  }
+
   void start() {
     resume();
   }
 
   void pause() {
     rolling.value = false;
-    rollTimer?.cancel();
-    rollTimer = null;
+    stopTimer();
   }
 
   void resume() {
@@ -133,7 +141,7 @@ class RollingTextState extends State<RollingText> {
       scrollOffset = 0;
       controller.animateTo(
         scrollOffset,
-        duration: const Duration(milliseconds: 1),
+        duration: quickly,
         curve: Curves.linear,
       );
     });
@@ -143,9 +151,24 @@ class RollingTextState extends State<RollingText> {
     return rolling.value;
   }
 
-  void setupNextScroll() {
-    assert(rollTimer == null);
+  void goto(int lineNum) {
+    final offset = (lineNum - 1) * textSize!.height;
+    if (offset < 0 || offset > scrollEndPos) return;
 
+    scrollOffset = offset;
+    setState(() {
+      controller.animateTo(
+        scrollOffset,
+        duration: quickly,
+        curve: Curves.linear,
+      );
+    });
+
+    setupNextScroll();
+  }
+
+  void setupNextScroll() {
+    stopTimer();
     rollTimer = Timer(scrollDuration, () {
       rollTimer = null;
       if (rolling.value) {
@@ -155,9 +178,7 @@ class RollingTextState extends State<RollingText> {
   }
 
   void scrollText() {
-    final bottom = controller.position.maxScrollExtent;
-
-    if (scrollOffset >= bottom) {
+    if (scrollOffset >= scrollEndPos) {
       debugPrint('bottom reached');
       scrollOffset = 0;
       rollTimer = Timer(widget.repeatPause ?? Duration.zero, () {
@@ -221,13 +242,16 @@ enum RollingStatus {
 
 class RollingTextController {
   final status = ValueNotifier(false);
+  ValueGetter<bool> isRolling = _notImplemented;
   VoidCallback start = _notImplemented;
   VoidCallback stop = _notImplemented;
   VoidCallback restart = _notImplemented;
   VoidCallback pause = _notImplemented;
   VoidCallback resume = _notImplemented;
   VoidCallback rewind = _notImplemented;
-  ValueGetter<bool> isRolling = _notImplemented;
+  VoidCallback forward = _notImplemented;
+  VoidCallback backward = _notImplemented;
+  void Function(int) goto = (_) => throw UnimplementedError();
 
   static Never _notImplemented() {
     throw UnimplementedError();

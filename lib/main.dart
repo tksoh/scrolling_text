@@ -90,6 +90,13 @@ class _MyHomePageState extends State<MyHomePage> {
                 );
               },
             ),
+            const SizedBox(height: 10),
+            ElevatedButton(
+              onPressed: () {
+                rollController.goto(1);
+              },
+              child: const Text('Goto Top'),
+            ),
             Text(
               '$_counter',
               style: Theme.of(context).textTheme.headlineMedium,
