@@ -35,7 +35,7 @@ class RollingTextState extends State<RollingText> {
   ScrollController controller = ScrollController();
   late Duration scrollDuration;
   int? repeatCounter;
-  final rolling = ValueNotifier(true);
+  final rolling = ValueNotiferEx(true);
   Size? textSize;
   late RollingTextController textController;
   Timer? rollTimer;
@@ -68,9 +68,15 @@ class RollingTextState extends State<RollingText> {
     connectNotifiers(rolling, textController.status);
   }
 
-  void connectNotifiers<T>(ValueNotifier<T> src, ValueNotifier<T> dest) {
+  @override
+  void dispose() {
+    rolling.removeListenerEx();
+    super.dispose();
+  }
+
+  void connectNotifiers<T>(ValueNotiferEx<T> src, ValueNotifier<T> dest) {
     dest.value = src.value;
-    src.addListener(() {
+    src.addListenerEx(() {
       dest.value = src.value;
       debugPrint('addListener: dest.value updated to ${dest.value}');
     });
@@ -231,5 +237,23 @@ class RollingTextController {
 
   static Never _notImplemented() {
     throw UnimplementedError();
+  }
+}
+
+class ValueNotiferEx<T> extends ValueNotifier<T> {
+  List<VoidCallback> listeners = [];
+
+  ValueNotiferEx(super.value);
+
+  void addListenerEx(VoidCallback listener) {
+    listeners.add(listener);
+    addListener(listener);
+  }
+
+  void removeListenerEx() {
+    while (listeners.isNotEmpty) {
+      removeListener(listeners.last);
+      listeners.removeLast();
+    }
   }
 }
