@@ -65,10 +65,14 @@ class RollingTextState extends State<RollingText> {
     textController.isRolling = isRolling;
 
     // setup status monitor
-    textController.status.value = rolling.value;
-    rolling.addListener(() {
-      debugPrint('status = ${rolling.value}');
-      textController.status.value = rolling.value;
+    connectNotifiers(rolling, textController.status);
+  }
+
+  void connectNotifiers<T>(ValueNotifier<T> src, ValueNotifier<T> dest) {
+    dest.value = src.value;
+    src.addListener(() {
+      dest.value = src.value;
+      debugPrint('addListener: dest.value updated to ${dest.value}');
     });
   }
 
@@ -216,7 +220,7 @@ enum RollingStatus {
 }
 
 class RollingTextController {
-  final ValueNotifier status = ValueNotifier(false);
+  final status = ValueNotifier(false);
   VoidCallback start = _notImplemented;
   VoidCallback stop = _notImplemented;
   VoidCallback restart = _notImplemented;
