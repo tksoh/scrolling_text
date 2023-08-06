@@ -91,11 +91,44 @@ class _MyHomePageState extends State<MyHomePage> {
               },
             ),
             const SizedBox(height: 10),
-            ElevatedButton(
-              onPressed: () {
-                rollController.goto(1);
-              },
-              child: const Text('Goto Top'),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceAround,
+              children: [
+                ElevatedButton(
+                  onPressed: () {
+                    rollController.first();
+                  },
+                  child: const Text(' << '),
+                ),
+                ElevatedButton(
+                  onPressed: () {
+                    rollController.previous();
+                  },
+                  child: const Text('  <  '),
+                ),
+                ElevatedButton(
+                  onPressed: () {
+                    if (rollController.status.value) {
+                      rollController.pause();
+                    } else {
+                      rollController.resume();
+                    }
+                  },
+                  child: const Text('Stop/Start'),
+                ),
+                ElevatedButton(
+                  onPressed: () {
+                    rollController.next();
+                  },
+                  child: const Text('  >  '),
+                ),
+                ElevatedButton(
+                  onPressed: () {
+                    rollController.last();
+                  },
+                  child: const Text(' >> '),
+                ),
+              ],
             ),
             Text(
               '$_counter',
