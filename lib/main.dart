@@ -82,7 +82,7 @@ class _MyHomePageState extends State<MyHomePage> {
               valueListenable: rollController.status,
               builder: (context, value, child) {
                 return Text(
-                  'Rolling: $value',
+                  'Rolling: $value (${rollController.isRolling()})',
                   style: TextStyle(
                     fontSize: 25,
                     color: value ? Colors.green : Colors.red,

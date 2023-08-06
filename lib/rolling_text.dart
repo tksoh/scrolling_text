@@ -210,8 +210,6 @@ class RollingTextState extends State<RollingText> {
   }
 }
 
-typedef BoolCallBack = bool Function();
-
 enum RollingStatus {
   rolling,
   stopped,
@@ -225,12 +223,9 @@ class RollingTextController {
   VoidCallback pause = _notImplemented;
   VoidCallback resume = _notImplemented;
   VoidCallback rewind = _notImplemented;
-  BoolCallBack isRolling = () {
-    _notImplemented();
-    return false;
-  };
+  ValueGetter<bool> isRolling = _notImplemented;
 
-  static void _notImplemented() {
-    throw "this function is not implemented";
+  static Never _notImplemented() {
+    throw UnimplementedError();
   }
 }
