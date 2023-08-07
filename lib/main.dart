@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-import 'samples/poem_1.dart';
+import 'samples/poem_2.dart';
 import 'rolling_text.dart';
 
 final scrollTextKey = GlobalKey<RollingTextState>();
@@ -40,7 +40,7 @@ class _MyHomePageState extends State<MyHomePage> {
 
   @override
   void initState() {
-    scrollText = addLineNumbers(poemContrast);
+    scrollText = addLineNumbers(poemIf);
     super.initState();
   }
 
