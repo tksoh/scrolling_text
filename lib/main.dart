@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-
+import 'samples/poem_1.dart';
 import 'samples/poem_2.dart';
 import 'rolling_text.dart';
 
@@ -74,6 +74,31 @@ class _MyHomePageState extends State<MyHomePage> {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: <Widget>[
+            Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                ElevatedButton(
+                  onPressed: () {
+                    setState(() {
+                      scrollText = addLineNumbers(poemIf);
+                      rollController.restart();
+                    });
+                  },
+                  child: const Text('Short Text'),
+                ),
+                const SizedBox(width: 20),
+                ElevatedButton(
+                  onPressed: () {
+                    setState(() {
+                      scrollText = addLineNumbers(poemContrast);
+                      rollController.restart();
+                    });
+                  },
+                  child: const Text('Long Text'),
+                ),
+              ],
+            ),
+            const SizedBox(height: 20),
             showWidgetBorder(
               color: Colors.blue,
               child: RollingText(
