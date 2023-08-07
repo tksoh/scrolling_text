@@ -68,7 +68,7 @@ class RollingTextState extends State<RollingText> {
     textController.restart = restart;
     textController.rewind = rewind;
     textController.resume = resume;
-    textController.goto = goto;
+    // textController.goto = goto;
     textController.first = firstLine;
     textController.last = lastLine;
     textController.next = nextLine;
