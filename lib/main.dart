@@ -36,6 +36,25 @@ class MyHomePage extends StatefulWidget {
 class _MyHomePageState extends State<MyHomePage> {
   int _counter = 0;
   final rollController = RollingTextController();
+  late String scrollText;
+
+  @override
+  void initState() {
+    scrollText = addLineNumbers(poemContrast);
+    super.initState();
+  }
+
+  String addLineNumbers(String text) {
+    final lines = text.split('\n');
+    String numbered = '';
+    for (int i = 0; i < lines.length; i++) {
+      final lineNum = i + 1;
+      final line = lines[i];
+      numbered += '$lineNum: $line\n';
+    }
+
+    return numbered;
+  }
 
   void _incrementCounter() {
     rollController.restart();
@@ -59,7 +78,7 @@ class _MyHomePageState extends State<MyHomePage> {
               child: RollingText(
                 key: scrollTextKey,
                 controller: rollController,
-                text: poemContrast,
+                text: scrollText,
                 repeatPause: const Duration(seconds: 1),
                 repeatCount: 1,
                 rewindWhenDone: false,
