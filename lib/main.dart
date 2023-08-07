@@ -147,18 +147,6 @@ class _MyHomePageState extends State<MyHomePage> {
                 ),
               ),
             ),
-            ValueListenableBuilder(
-              valueListenable: rollController.status,
-              builder: (context, value, child) {
-                return Text(
-                  'Rolling: $value (${rollController.isRolling()})',
-                  style: TextStyle(
-                    fontSize: 25,
-                    color: value ? Colors.green : Colors.red,
-                  ),
-                );
-              },
-            ),
             const SizedBox(height: 10),
             Row(
               mainAxisAlignment: MainAxisAlignment.center,
@@ -177,15 +165,25 @@ class _MyHomePageState extends State<MyHomePage> {
                   child: const Text('  <  '),
                 ),
                 const SizedBox(width: 20),
-                ElevatedButton(
-                  onPressed: () {
-                    if (rollController.status.value) {
-                      rollController.pause();
-                    } else {
-                      rollController.resume();
-                    }
+                ValueListenableBuilder(
+                  valueListenable: rollController.status,
+                  builder: (context, value, child) {
+                    return ElevatedButton(
+                      style: ElevatedButton.styleFrom(
+                        backgroundColor: value ? Colors.green : Colors.red,
+                      ),
+                      onPressed: () {
+                        if (rollController.status.value) {
+                          rollController.pause();
+                        } else {
+                          rollController.resume();
+                        }
+                      },
+                      child: Icon(
+                        value ? Icons.pause : Icons.play_arrow,
+                      ),
+                    );
                   },
-                  child: const Text('Stop/Start'),
                 ),
                 const SizedBox(width: 20),
                 ElevatedButton(
