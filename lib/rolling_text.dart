@@ -90,7 +90,7 @@ class RollingTextState extends State<RollingText> {
   @override
   Widget build(BuildContext context) {
     assert(widget.maxLines > 0);
-    textSize ??= getTextSize(style: widget.style);
+    textSize = getTextSize(style: widget.style);
 
     return SizedBox(
       height: textSize!.height * widget.maxLines,

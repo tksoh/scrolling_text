@@ -37,6 +37,7 @@ class _MyHomePageState extends State<MyHomePage> {
   int _counter = 0;
   final rollController = RollingTextController();
   late String scrollText;
+  double fontSize = 25;
 
   @override
   void initState() {
@@ -99,6 +100,36 @@ class _MyHomePageState extends State<MyHomePage> {
               ],
             ),
             const SizedBox(height: 20),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                IconButton(
+                  onPressed: () {
+                    setState(() {
+                      fontSize--;
+                    });
+                  },
+                  icon: const Icon(Icons.text_decrease),
+                ),
+                const SizedBox(width: 20),
+                Text(
+                  '[$fontSize]',
+                  style: const TextStyle(
+                    fontWeight: FontWeight.bold,
+                  ),
+                ),
+                const SizedBox(width: 20),
+                IconButton(
+                  onPressed: () {
+                    setState(() {
+                      fontSize++;
+                    });
+                  },
+                  icon: const Icon(Icons.text_increase),
+                ),
+              ],
+            ),
+            const SizedBox(height: 20),
             SizedBox(
               width: 500,
               child: showWidgetBorder(
@@ -111,7 +142,7 @@ class _MyHomePageState extends State<MyHomePage> {
                   repeatCount: 1,
                   rewindWhenDone: false,
                   maxLines: 3,
-                  style: const TextStyle(fontSize: 25),
+                  style: TextStyle(fontSize: fontSize),
                 ),
               ),
             ),
