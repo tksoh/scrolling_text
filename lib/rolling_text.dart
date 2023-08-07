@@ -158,8 +158,7 @@ class RollingTextState extends State<RollingText> {
     if (offset < 0 || offset > scrollEndPos) return;
 
     scrollOffset = offset;
-    returnTOStartPos();
-    setupNextScroll();
+    scrollToPos(scrollOffset);
   }
 
   void firstLine() {
@@ -191,6 +190,14 @@ class RollingTextState extends State<RollingText> {
   Future<void> returnTOStartPos() async {
     await controller.animateTo(
       0,
+      duration: quickly,
+      curve: Curves.linear,
+    );
+  }
+
+  Future<void> scrollToPos(double pos) async {
+    await controller.animateTo(
+      pos,
       duration: quickly,
       curve: Curves.linear,
     );
