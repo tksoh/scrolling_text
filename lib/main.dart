@@ -126,7 +126,7 @@ class _MyHomePageState extends State<MyHomePage> {
             ),
             const SizedBox(height: 10),
             Row(
-              mainAxisAlignment: MainAxisAlignment.spaceAround,
+              mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 ElevatedButton(
                   onPressed: () {
@@ -134,12 +134,14 @@ class _MyHomePageState extends State<MyHomePage> {
                   },
                   child: const Text(' << '),
                 ),
+                const SizedBox(width: 20),
                 ElevatedButton(
                   onPressed: () {
                     rollController.previous();
                   },
                   child: const Text('  <  '),
                 ),
+                const SizedBox(width: 20),
                 ElevatedButton(
                   onPressed: () {
                     if (rollController.status.value) {
@@ -150,12 +152,14 @@ class _MyHomePageState extends State<MyHomePage> {
                   },
                   child: const Text('Stop/Start'),
                 ),
+                const SizedBox(width: 20),
                 ElevatedButton(
                   onPressed: () {
                     rollController.next();
                   },
                   child: const Text('  >  '),
                 ),
+                const SizedBox(width: 20),
                 ElevatedButton(
                   onPressed: () {
                     rollController.last();
