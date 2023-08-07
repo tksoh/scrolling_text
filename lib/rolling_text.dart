@@ -165,7 +165,12 @@ class RollingTextState extends State<RollingText> {
   }
 
   void lastLine() {
-    goto(lineCount - widget.maxLines + 1);
+    // FIX ME: when any line is wrapped, the line position cannot be
+    // be take directly from the text. As temp workaround, we derive
+    // the bottom of the text using the scroll data. Be warned that
+    // goto() will not function correctly.
+    final lines = scrollEndPos ~/ textSize!.height + widget.maxLines;
+    goto(lines - widget.maxLines + 1);
   }
 
   void nextLine() {

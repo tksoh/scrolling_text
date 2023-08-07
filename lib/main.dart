@@ -99,17 +99,20 @@ class _MyHomePageState extends State<MyHomePage> {
               ],
             ),
             const SizedBox(height: 20),
-            showWidgetBorder(
-              color: Colors.blue,
-              child: RollingText(
-                key: scrollTextKey,
-                controller: rollController,
-                text: scrollText,
-                repeatPause: const Duration(seconds: 1),
-                repeatCount: 1,
-                rewindWhenDone: false,
-                maxLines: 3,
-                style: const TextStyle(fontSize: 25),
+            SizedBox(
+              width: 500,
+              child: showWidgetBorder(
+                color: Colors.blue,
+                child: RollingText(
+                  key: scrollTextKey,
+                  controller: rollController,
+                  text: scrollText,
+                  repeatPause: const Duration(seconds: 1),
+                  repeatCount: 1,
+                  rewindWhenDone: false,
+                  maxLines: 3,
+                  style: const TextStyle(fontSize: 25),
+                ),
               ),
             ),
             ValueListenableBuilder(
