@@ -12,6 +12,7 @@ class RollingText extends StatefulWidget {
   final bool rewindWhenDone;
   final TextDirection? textDirection;
   final RollingTextController? controller;
+  final bool showScrollBar;
 
   const RollingText({
     required this.text,
@@ -20,6 +21,7 @@ class RollingText extends StatefulWidget {
     this.repeatCount,
     this.maxLines = 1,
     this.rewindWhenDone = true,
+    this.showScrollBar = false,
     this.style,
     this.textDirection,
     this.controller,
@@ -95,7 +97,9 @@ class RollingTextState extends State<RollingText> {
     return SizedBox(
       height: textSize!.height * widget.maxLines,
       child: ScrollConfiguration(
-        behavior: ScrollConfiguration.of(context).copyWith(scrollbars: false),
+        behavior: ScrollConfiguration.of(context).copyWith(
+          scrollbars: widget.showScrollBar,
+        ),
         child: SingleChildScrollView(
           controller: controller,
           child: Text(

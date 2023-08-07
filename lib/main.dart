@@ -141,6 +141,7 @@ class _MyHomePageState extends State<MyHomePage> {
                   repeatPause: const Duration(seconds: 1),
                   repeatCount: 1,
                   rewindWhenDone: false,
+                  showScrollBar: true,
                   maxLines: 3,
                   style: TextStyle(fontSize: fontSize),
                 ),
