@@ -40,15 +40,14 @@ class RollingTextState extends State<RollingText> {
   late RollingTextController textController;
   Timer? rollTimer;
   final quickly = const Duration(milliseconds: 1);
-  late int lineCount;
 
+  int get lineCount => '\n'.allMatches(widget.text).length + 1;
   double get scrollStepSize => textSize!.height;
   double get scrollEndPos => controller.position.maxScrollExtent;
   int get currentLine => scrollOffset ~/ textSize!.height + 1;
 
   @override
   void initState() {
-    lineCount = widget.text.split('\n').length;
     repeatCounter = widget.repeatCount;
     scrollDuration = widget.speed ?? const Duration(milliseconds: 1000);
     setupNextScroll();
