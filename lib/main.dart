@@ -46,14 +46,15 @@ class _MyHomePageState extends State<MyHomePage> {
 
   String addLineNumbers(String text) {
     final lines = text.split('\n');
-    String numbered = '';
+    final numberedLines = [];
+
     for (int i = 0; i < lines.length; i++) {
       final lineNum = i + 1;
       final line = lines[i];
-      numbered += '$lineNum: $line\n';
+      numberedLines.add('$lineNum: $line');
     }
 
-    return numbered;
+    return numberedLines.join('\n');
   }
 
   void _incrementCounter() {
