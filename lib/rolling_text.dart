@@ -145,14 +145,8 @@ class RollingTextState extends State<RollingText> {
   }
 
   void rewind() {
-    setState(() {
-      scrollOffset = 0;
-      controller.animateTo(
-        scrollOffset,
-        duration: quickly,
-        curve: Curves.linear,
-      );
-    });
+    scrollOffset = 0;
+    returnTOStartPos();
   }
 
   bool isRolling() {
@@ -164,14 +158,7 @@ class RollingTextState extends State<RollingText> {
     if (offset < 0 || offset > scrollEndPos) return;
 
     scrollOffset = offset;
-    setState(() {
-      controller.animateTo(
-        scrollOffset,
-        duration: quickly,
-        curve: Curves.linear,
-      );
-    });
-
+    returnTOStartPos();
     setupNextScroll();
   }
 
@@ -201,6 +188,14 @@ class RollingTextState extends State<RollingText> {
     });
   }
 
+  Future<void> returnTOStartPos() async {
+    await controller.animateTo(
+      0,
+      duration: quickly,
+      curve: Curves.linear,
+    );
+  }
+
   void scrollText() {
     if (scrollOffset >= scrollEndPos) {
       debugPrint('bottom reached');
@@ -220,13 +215,11 @@ class RollingTextState extends State<RollingText> {
       });
     } else {
       scrollOffset += scrollStepSize;
-      setState(() {
-        controller.animateTo(
-          scrollOffset,
-          duration: scrollDuration,
-          curve: Curves.linear,
-        );
-      });
+      controller.animateTo(
+        scrollOffset,
+        duration: scrollDuration,
+        curve: Curves.linear,
+      );
       setupNextScroll();
     }
   }
