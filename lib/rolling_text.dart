@@ -208,7 +208,7 @@ class RollingTextState extends State<RollingText> {
   }
 
   void scrollText() {
-    if (scrollOffset >= scrollEndPos) {
+    if (controller.position.pixels >= scrollEndPos) {
       debugPrint('bottom reached');
       // scrollOffset = 0;
       rollTimer = Timer(widget.repeatPause ?? Duration.zero, () {
@@ -225,7 +225,7 @@ class RollingTextState extends State<RollingText> {
         }
       });
     } else {
-      scrollOffset += scrollStepSize;
+      scrollOffset = controller.position.pixels + scrollStepSize;
       controller.animateTo(
         scrollOffset,
         duration: scrollDuration,
