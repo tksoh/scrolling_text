@@ -40,6 +40,7 @@ class RollingTextState extends State<RollingText> {
   late RollingTextController textController;
   Timer? rollTimer;
   final quickly = const Duration(milliseconds: 1);
+  late int lineCount;
 
   double get scrollStepSize => textSize!.height;
   double get scrollEndPos => controller.position.maxScrollExtent;
@@ -47,11 +48,14 @@ class RollingTextState extends State<RollingText> {
 
   @override
   void initState() {
+    lineCount = widget.text.split('\n').length;
     repeatCounter = widget.repeatCount;
-    scrollDuration = widget.speed ?? const Duration(milliseconds: 1000);
-    setupNextScroll();
+    scrollDuration = widget.speed ?? Duration(seconds: lineCount);
     initController();
     super.initState();
+    Future(
+      () => doScroll(),
+    );
   }
 
   void initController() {
@@ -142,35 +146,26 @@ class RollingTextState extends State<RollingText> {
     start();
   }
 
-  void rewind() {
-    setState(() {
-      scrollOffset = 0;
-      controller.animateTo(
-        scrollOffset,
-        duration: quickly,
-        curve: Curves.linear,
-      );
-    });
+  void rewind() async {
+    returnTOStartPos().then((value) => doScroll());
   }
 
   bool isRolling() {
     return rolling.value;
   }
 
-  void goto(int lineNum) {
+  void goto(int lineNum) async {
     final offset = (lineNum - 1) * textSize!.height;
     if (offset < 0 || offset > scrollEndPos) return;
 
     scrollOffset = offset;
-    setState(() {
-      controller.animateTo(
-        scrollOffset,
-        duration: quickly,
-        curve: Curves.linear,
-      );
-    });
+    await controller.animateTo(
+      scrollOffset,
+      duration: quickly,
+      curve: Curves.linear,
+    );
 
-    setupNextScroll();
+    doScroll();
   }
 
   void firstLine() {
@@ -178,8 +173,7 @@ class RollingTextState extends State<RollingText> {
   }
 
   void lastLine() {
-    final line = widget.text.split('\n').length - 1;
-    goto(line.toInt());
+    goto(lineCount);
   }
 
   void nextLine() {
@@ -192,12 +186,44 @@ class RollingTextState extends State<RollingText> {
 
   void setupNextScroll() {
     stopTimer();
-    rollTimer = Timer(scrollDuration, () {
-      rollTimer = null;
-      if (rolling.value) {
-        scrollText();
+    // rollTimer = Timer(scrollDuration, () {
+    //   rollTimer = null;
+    //   if (rolling.value) {
+    //     scrollText();
+    //   }
+    // });
+  }
+
+  void doScroll() async {
+    if (!rolling.value) return;
+
+    controller
+        .animateTo(
+      scrollEndPos,
+      duration: scrollDuration,
+      curve: Curves.linear,
+    )
+        .then((value) async {
+      await Future.delayed(widget.repeatPause ?? Duration.zero);
+
+      final keepScroll = shouldRepeatScroll();
+      if (!keepScroll && widget.rewindWhenDone) {
+        rolling.value = false;
+        returnTOStartPos();
+      } else if (keepScroll) {
+        rewind();
+      } else {
+        rolling.value = false;
       }
     });
+  }
+
+  Future<void> returnTOStartPos() async {
+    await controller.animateTo(
+      0,
+      duration: quickly,
+      curve: Curves.linear,
+    );
   }
 
   void scrollText() {
@@ -219,13 +245,11 @@ class RollingTextState extends State<RollingText> {
       });
     } else {
       scrollOffset += scrollStepSize;
-      setState(() {
-        controller.animateTo(
-          scrollOffset,
-          duration: scrollDuration,
-          curve: Curves.linear,
-        );
-      });
+      controller.animateTo(
+        scrollOffset,
+        duration: scrollDuration,
+        curve: Curves.linear,
+      );
       setupNextScroll();
     }
   }
