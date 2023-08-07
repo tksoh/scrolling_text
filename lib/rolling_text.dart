@@ -166,7 +166,7 @@ class RollingTextState extends State<RollingText> {
   }
 
   void lastLine() {
-    goto(lineCount);
+    goto(lineCount - widget.maxLines + 1);
   }
 
   void nextLine() {
