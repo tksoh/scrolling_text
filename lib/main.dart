@@ -37,7 +37,7 @@ class _MyHomePageState extends State<MyHomePage> {
   int _counter = 0;
   final rollController = RollingTextController();
   late String scrollText;
-  double fontSize = 25;
+  double fontSize = 20;
 
   @override
   void initState() {
