@@ -38,15 +38,15 @@ class RollingTextState extends State<RollingText> {
   late Duration scrollDuration;
   int? repeatCounter;
   final rolling = ValueNotifier(true);
-  Size? textSize;
+  late Size textSize;
   late RollingTextController textController;
   Timer? rollTimer;
   final quickly = const Duration(milliseconds: 1);
 
   int get lineCount => '\n'.allMatches(widget.text).length + 1;
-  double get scrollStepSize => textSize!.height;
+  double get scrollStepSize => textSize.height;
   double get scrollEndPos => controller.position.maxScrollExtent;
-  int get currentLine => controller.position.pixels ~/ textSize!.height + 1;
+  int get currentLine => controller.position.pixels ~/ textSize.height + 1;
 
   @override
   void initState() {
@@ -95,7 +95,7 @@ class RollingTextState extends State<RollingText> {
     textSize = getTextSize(style: widget.style);
 
     return SizedBox(
-      height: textSize!.height * widget.maxLines,
+      height: textSize.height * widget.maxLines,
       child: ScrollConfiguration(
         behavior: ScrollConfiguration.of(context).copyWith(
           scrollbars: widget.showScrollBar,
@@ -157,7 +157,7 @@ class RollingTextState extends State<RollingText> {
   }
 
   void goto(int lineNum) {
-    final offset = (lineNum - 1) * textSize!.height;
+    final offset = (lineNum - 1) * textSize.height;
     if (offset < 0 || offset > scrollEndPos) return;
 
     scrollOffset = offset;
@@ -173,7 +173,7 @@ class RollingTextState extends State<RollingText> {
     // be take directly from the text. As temp workaround, we derive
     // the bottom of the text using the scroll data. Be warned that
     // goto() will not function correctly.
-    final lines = scrollEndPos ~/ textSize!.height + widget.maxLines;
+    final lines = scrollEndPos ~/ textSize.height + widget.maxLines;
     goto(lines - widget.maxLines + 1);
   }
 
