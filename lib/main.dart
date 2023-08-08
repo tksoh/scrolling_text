@@ -41,7 +41,7 @@ class _MyHomePageState extends State<MyHomePage> {
 
   @override
   void initState() {
-    scrollText = addLineNumbers(poemIf);
+    scrollText = (poemIf);
     super.initState();
   }
 
@@ -81,7 +81,7 @@ class _MyHomePageState extends State<MyHomePage> {
                 ElevatedButton(
                   onPressed: () {
                     setState(() {
-                      scrollText = addLineNumbers(poemIf);
+                      scrollText = (poemIf);
                       rollController.restart();
                     });
                   },
@@ -91,7 +91,7 @@ class _MyHomePageState extends State<MyHomePage> {
                 ElevatedButton(
                   onPressed: () {
                     setState(() {
-                      scrollText = addLineNumbers(poemContrast);
+                      scrollText = (poemContrast);
                       rollController.restart();
                     });
                   },

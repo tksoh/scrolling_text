@@ -103,10 +103,35 @@ class RollingTextState extends State<RollingText> {
         ),
         child: SingleChildScrollView(
           controller: controller,
-          child: Text(
-            widget.text,
+          child: buildList(),
+        ),
+      ),
+    );
+  }
+
+  Widget buildText() {
+    return Text(
+      widget.text,
+      style: widget.style,
+      textDirection: widget.textDirection,
+    );
+  }
+
+  Widget buildList() {
+    final lines = widget.text.split('\n');
+    return ListView(
+      shrinkWrap: true,
+      children: List.generate(
+        lines.length,
+        (index) => ListTile(
+          dense: true,
+          leading: Text(
+            '$index',
             style: widget.style,
-            textDirection: widget.textDirection,
+          ),
+          title: Text(
+            lines[index],
+            style: widget.style,
           ),
         ),
       ),
