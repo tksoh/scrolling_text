@@ -119,20 +119,40 @@ class RollingTextState extends State<RollingText> {
 
   Widget buildList() {
     final lines = widget.text.split('\n');
+
+    // calculate width of line numbers pane
+    final digits = lines.length.toString().split('').length;
+    final numberSize = getTextSize(
+      text: '0' * (digits + 1),
+      style: widget.style,
+    );
+
+    // build the lines
     return ListView(
       shrinkWrap: true,
       children: List.generate(
         lines.length,
-        (index) => ListTile(
-          dense: true,
-          leading: Text(
-            '$index',
-            style: widget.style,
-          ),
-          title: Text(
-            lines[index],
-            style: widget.style,
-          ),
+        (index) => Row(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            SizedBox(
+              width: numberSize.width,
+              child: Align(
+                alignment: Alignment.centerRight,
+                child: Text(
+                  '${index + 1}',
+                  style: widget.style?.copyWith(color: Colors.grey),
+                ),
+              ),
+            ),
+            const SizedBox(width: 10),
+            Expanded(
+              child: Text(
+                lines[index],
+                style: widget.style,
+              ),
+            ),
+          ],
         ),
       ),
     );
@@ -284,9 +304,9 @@ class RollingTextState extends State<RollingText> {
     return true;
   }
 
-  Size getTextSize({TextStyle? style}) {
+  Size getTextSize({String text = 'A', TextStyle? style}) {
     final TextPainter textPainter = TextPainter(
-      text: TextSpan(text: 'A', style: style),
+      text: TextSpan(text: text, style: style),
       maxLines: 1,
       textScaleFactor: MediaQuery.of(context).textScaleFactor,
       textDirection: TextDirection.ltr,
