@@ -13,6 +13,7 @@ class RollingText extends StatefulWidget {
   final TextDirection? textDirection;
   final RollingTextController? controller;
   final bool showScrollBar;
+  final bool showLineNumbers;
 
   const RollingText({
     required this.text,
@@ -22,6 +23,7 @@ class RollingText extends StatefulWidget {
     this.maxLines = 1,
     this.rewindWhenDone = true,
     this.showScrollBar = false,
+    this.showLineNumbers = false,
     this.style,
     this.textDirection,
     this.controller,
@@ -135,17 +137,19 @@ class RollingTextState extends State<RollingText> {
         (index) => Row(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            SizedBox(
-              width: numberSize.width,
-              child: Align(
-                alignment: Alignment.centerRight,
-                child: Text(
-                  '${index + 1}',
-                  style: widget.style?.copyWith(color: Colors.grey),
+            if (widget.showLineNumbers) ...[
+              SizedBox(
+                width: numberSize.width,
+                child: Align(
+                  alignment: Alignment.centerRight,
+                  child: Text(
+                    '${index + 1}',
+                    style: widget.style?.copyWith(color: Colors.grey),
+                  ),
                 ),
               ),
-            ),
-            const SizedBox(width: 10),
+              const SizedBox(width: 10)
+            ],
             Expanded(
               child: Text(
                 lines[index],

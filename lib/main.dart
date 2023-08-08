@@ -38,6 +38,7 @@ class _MyHomePageState extends State<MyHomePage> {
   final rollController = RollingTextController();
   late String scrollText;
   double fontSize = 20;
+  bool showLineNumbers = false;
 
   @override
   void initState() {
@@ -127,6 +128,17 @@ class _MyHomePageState extends State<MyHomePage> {
                   },
                   icon: const Icon(Icons.text_increase),
                 ),
+                const SizedBox(width: 20),
+                IconButton(
+                  onPressed: () {
+                    setState(() {
+                      showLineNumbers = !showLineNumbers;
+                    });
+                  },
+                  icon: Icon(
+                    showLineNumbers ? Icons.menu : Icons.format_list_numbered,
+                  ),
+                ),
               ],
             ),
             const SizedBox(height: 20),
@@ -142,6 +154,7 @@ class _MyHomePageState extends State<MyHomePage> {
                   repeatCount: 1,
                   rewindWhenDone: false,
                   showScrollBar: true,
+                  showLineNumbers: showLineNumbers,
                   maxLines: 10,
                   style: TextStyle(fontSize: fontSize),
                 ),
