@@ -130,8 +130,8 @@ class _MyHomePageState extends State<MyHomePage> {
               ],
             ),
             const SizedBox(height: 20),
-            SizedBox(
-              width: 500,
+            FractionallySizedBox(
+              widthFactor: 0.8,
               child: showWidgetBorder(
                 color: Colors.blue,
                 child: RollingText(
@@ -142,7 +142,7 @@ class _MyHomePageState extends State<MyHomePage> {
                   repeatCount: 1,
                   rewindWhenDone: false,
                   showScrollBar: true,
-                  maxLines: 3,
+                  maxLines: 10,
                   style: TextStyle(fontSize: fontSize),
                 ),
               ),
