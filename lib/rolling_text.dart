@@ -46,6 +46,7 @@ class RollingTextState extends State<RollingText> {
   int get lineCount => '\n'.allMatches(widget.text).length + 1;
   double get scrollStepSize => textSize.height;
   double get scrollEndPos => controller.position.maxScrollExtent;
+  double get currentPos => controller.position.pixels;
   int get currentLine => controller.position.pixels ~/ textSize.height + 1;
 
   @override
@@ -124,12 +125,14 @@ class RollingTextState extends State<RollingText> {
   void pause() {
     rolling.value = false;
     stopTimer();
+    scrollToPos(currentPos); // interrupt ongoing scrolling
   }
 
   void resume() {
     if (rolling.value) return;
 
     rolling.value = true;
+    scrollText();
     setupNextScroll();
   }
 
