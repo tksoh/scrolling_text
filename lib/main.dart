@@ -39,6 +39,7 @@ class _MyHomePageState extends State<MyHomePage> {
   late String scrollText;
   double fontSize = 20;
   bool showLineNumbers = false;
+  bool switchTile = false;
 
   @override
   void initState() {
@@ -60,7 +61,8 @@ class _MyHomePageState extends State<MyHomePage> {
   }
 
   void _incrementCounter() {
-    rollController.restart();
+    debugPrint('_incrementCounter clicked at @${DateTime.now()}');
+    // rollController.restart();
     setState(() {
       _counter++;
     });
@@ -68,6 +70,7 @@ class _MyHomePageState extends State<MyHomePage> {
 
   @override
   Widget build(BuildContext context) {
+    debugPrint('building scaffold');
     return Scaffold(
       appBar: AppBar(
         title: Text(widget.title),
@@ -218,6 +221,18 @@ class _MyHomePageState extends State<MyHomePage> {
               '$_counter',
               style: Theme.of(context).textTheme.headlineMedium,
             ),
+            const SizedBox(width: 20),
+            buildSwitchTile(),
+            SwitchListTile(
+              title: const Text('Normal switch'),
+              onChanged: (value) {
+                debugPrint('switch: $value');
+                setState(() {
+                  switchTile = value;
+                });
+              },
+              value: switchTile,
+            ),
           ],
         ),
       ),
@@ -226,6 +241,48 @@ class _MyHomePageState extends State<MyHomePage> {
         tooltip: 'Increment',
         child: const Icon(Icons.add),
       ), // This trailing comma makes auto-formatting nicer for build methods.
+    );
+  }
+
+  Widget buildSwitchTile() {
+    return StatefulBuilder(
+      builder: (BuildContext context, setState) {
+        debugPrint('building StatefulBuilder switch');
+        return SwitchListTile(
+          title: const Text('StatefulBuilder switch'),
+          onChanged: (value) {
+            debugPrint('switch: $value');
+            setState(() {
+              switchTile = value;
+            });
+          },
+          value: switchTile,
+        );
+      },
+    );
+  }
+}
+
+class MySwitchTile extends StatefulWidget {
+  const MySwitchTile({super.key});
+
+  @override
+  State<MySwitchTile> createState() => _MySwitchTileState();
+}
+
+class _MySwitchTileState extends State<MySwitchTile> {
+  bool switchTile = false;
+  @override
+  Widget build(BuildContext context) {
+    return SwitchListTile(
+      title: const Text('Click to switch'),
+      onChanged: (value) {
+        debugPrint('switch: $value');
+        setState(() {
+          switchTile = value;
+        });
+      },
+      value: switchTile,
     );
   }
 }
