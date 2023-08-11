@@ -123,7 +123,7 @@ class RollingTextState extends State<RollingText> {
     final lines = widget.text.split('\n');
 
     // calculate width of line numbers pane
-    final digits = lines.length.toString().split('').length;
+    final digits = lines.length.toString().length;
     final numberSize = getTextSize(
       text: '0' * (digits + 1),
       style: widget.style,
